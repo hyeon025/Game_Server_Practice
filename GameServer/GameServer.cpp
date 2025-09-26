@@ -8,19 +8,26 @@ void HelloThread() {
     cout << "Hello Thread" << endl;
 }
 
+void HelloThread_2(int32 num) {
+    cout << num << endl;
+}
+
 int main()
 {
-    std::thread t; //만들기만 하는 것
-    
-    auto id = t.get_id(); //쓰레드 id가 0이 나온다. 
+    vector<std::thread> v;
 
-    t = std::thread(HelloThread); //이제야 id가 생겼다.
+    for (int32 i = 0; i < 10; i++)
+    {
+        v.push_back(std::thread(HelloThread_2, i)); 
+        //순서대로 출력하지는 않음. 예상불가. 병렬적인 쓰레드임
+        //순차적이지 않아서 출력되었을 때 순서가 뒤죽박죽임.
+    }
 
-    int32 count = t.hardware_concurrency(); //난 8개 나옴
-    auto id2 = t.get_id(); //id가 생긴 것을 볼 수 있다.
-
-    if(t.joinable()) //t가 join상태이면
-        t.join(); //t가 끝날 때까지 대기
+    for (int32 i = 0; i < 10; i++)
+    {
+        if (v[i].joinable())
+            v[i].join();
+    }
 
     cout << "Hello Main" << endl;
 
