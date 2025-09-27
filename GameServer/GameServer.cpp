@@ -5,11 +5,19 @@
 
 int32 sum = 0;
 
-void Add()	
+void Add()
 {
 	for (int32 i = 0; i < 100'0000; i++)
 	{
-		sum++;
+		//sum++;
+
+		//cpu 레지스터에 sum값을 가져와서 덧셈 처리
+		int32 eax = sum;
+		//eax = 0
+		eax = eax + 1;
+		//eax = 1
+		sum = eax;
+		//sum = 1
 	}
 }
 
@@ -17,7 +25,15 @@ void Sub()
 {
 	for (int32 i = 0; i < 100'0000; i++)
 	{
-		sum--;
+		//sum--;
+
+		//cpu 레지스터에 sum값을 가져와서 뺄셈 처리
+		int32 eax = sum;
+		//eax = 0
+		eax = eax - 1;
+		//eax = -1
+		sum = eax;
+		//sum = -1
 	}
 }
 
@@ -36,3 +52,5 @@ int main()
 	t2.join();
 	cout << sum << endl;
 }
+
+
