@@ -33,6 +33,6 @@ int main()
 	std::thread t1(Add); //같은 데이터를 다른 쓰레드에서 처리.
 	std::thread t2(Sub);
 	t1.join();
-	t1.join();
+	t2.join();
 	cout << sum << endl;
 }
