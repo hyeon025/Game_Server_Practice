@@ -2,30 +2,24 @@
 #include <iostream>
 #include "CorePch.h"
 #include <thread>
+#include <atomic>
 
-//atomic : All - Or - Nothing (다 되거나 다 안되거나)
-
-//DB
-//A라는 유저 인벤에서 집행검을 빼고
-//B라는 유저 인벤에 집행검을 추가
-
-//atomic 연산처리를 하지 않고 하나만 되면 플레이에 문제가 생김.
-
-int32 sum = 0;
+atomic<int32> sum = 0;
 
 void Add()
 {
 	for (int32 i = 0; i < 100'0000; i++)
 	{
-		//sum++;
+		sum.fetch_add(1);
+		//sum++ 과 같음
 
-		//cpu 레지스터에 sum값을 가져와서 덧셈 처리
-		int32 eax = sum;
-		//eax = 0
-		eax = eax + 1;
-		//eax = 1
-		sum = eax;
-		//sum = 1
+		////cpu 레지스터에 sum값을 가져와서 덧셈 처리
+		//int32 eax = sum;
+		////eax = 0
+		//eax = eax + 1;
+		////eax = 1
+		//sum = eax;
+		////sum = 1
 	}
 }
 
@@ -33,15 +27,16 @@ void Sub()
 {
 	for (int32 i = 0; i < 100'0000; i++)
 	{
-		//sum--;
+		sum.fetch_add(-1);
+		//sum-- 과 같음
 
-		//cpu 레지스터에 sum값을 가져와서 뺄셈 처리
-		int32 eax = sum;
-		//eax = 0
-		eax = eax - 1;
-		//eax = -1
-		sum = eax;
-		//sum = -1
+		////cpu 레지스터에 sum값을 가져와서 뺄셈 처리
+		//int32 eax = sum;
+		////eax = 0
+		//eax = eax - 1;
+		////eax = -1
+		//sum = eax;
+		////sum = -1
 	}
 }
 
