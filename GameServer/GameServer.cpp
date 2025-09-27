@@ -3,6 +3,14 @@
 #include "CorePch.h"
 #include <thread>
 
+//atomic : All - Or - Nothing (다 되거나 다 안되거나)
+
+//DB
+//A라는 유저 인벤에서 집행검을 빼고
+//B라는 유저 인벤에 집행검을 추가
+
+//atomic 연산처리를 하지 않고 하나만 되면 플레이에 문제가 생김.
+
 int32 sum = 0;
 
 void Add()
@@ -52,5 +60,3 @@ int main()
 	t2.join();
 	cout << sum << endl;
 }
-
-
