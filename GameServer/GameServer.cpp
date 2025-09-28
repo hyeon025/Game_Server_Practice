@@ -11,31 +11,14 @@ vector<int32> v;
 mutex m;
 
 //RAII (Resource Acquisition Is Initialization)
-template<typename T>
-class LockGuard
-{
-public:
-	LockGuard(T& m)
-	{
-		_mutex = &m;
-		_mutex->lock();
-	}
-
-	~LockGuard()
-	{
-		_mutex->unlock();
-	}
-
-private:
-	T* _mutex;
-};
 
 void Push()
 {
 	for (int32 i = 0; i < 10000; i++)
 	{
 		//자물쇠 잠그기
-		LockGuard<std::mutex> lockGuard(m); //알아서 락 하고 풀어준다.
+		std::lock_guard<std::mutex> lockGuard(m); //알아서 락 하고 풀어준다.
+
 		//m.lock();
 		//m.lock();
 
