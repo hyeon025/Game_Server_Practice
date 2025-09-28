@@ -17,7 +17,10 @@ void Push()
 	for (int32 i = 0; i < 10000; i++)
 	{
 		//자물쇠 잠그기
-		std::lock_guard<std::mutex> lockGuard(m); //알아서 락 하고 풀어준다.
+		//std::lock_guard<std::mutex> lockGuard(m); //알아서 락 하고 풀어준다.
+		std::unique_lock<std::mutex> uniqueLock(m, std::defer_lock);
+
+		uniqueLock.lock(); //락 시점 미루기
 
 		//m.lock();
 		//m.lock();
