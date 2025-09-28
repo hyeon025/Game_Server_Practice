@@ -23,6 +23,10 @@ void Push()
 
 int main()
 {
+	v.reserve(20000); 
+	//이렇게 돌리면 2만보다 좀 적은 사이즈로 출력됨.
+	//동시에 같은 인덱스에 값을 넣으려 해서 덮어씌워짐. (데이터 분실)
+
 	std::thread t1(Push);
 	std::thread t2(Push);
 
