@@ -25,8 +25,8 @@ void Func2()
 
 int main()
 {
-	std::thread t1(Func1);
-	std::thread t2(Func2); 
+	std::thread t1(Func1); //(유저 락 -> 어카운트 락)
+	std::thread t2(Func2); //(어카운트락 -> 유저 락)
 	//데드락 상황 발생 (서로 락 걸려서 둘 다 기다리는 상황)
 
 
