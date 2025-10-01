@@ -36,4 +36,14 @@ int main()
 	t2.join();
 
 	cout << "Jobs Done" << endl;
+
+	//참고
+	mutex m1;
+	mutex m2;
+
+	std::lock(m1, m2); //m1.lock(); m2.lock();
+	//알아서 일관적인 순서로 잠굼. 실전에서 많이 쓰지는 않음
+
+	//adopt_lock : 이미 lock이 된 상태이니 나중에 소멸될 때 풀어줘라.
+	lock_guard<mutex> g1(m1, std::adopt_lock);
 }
