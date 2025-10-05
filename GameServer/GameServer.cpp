@@ -5,14 +5,36 @@
 #include <atomic>
 #include <mutex>
 
+class SpinLock
+{
+public:
+	void lock() 
+	{
+		while (_locked)
+		{
+
+		}
+
+		_locked = true;
+	}
+
+	void unlock() 
+	{
+		_locked = false;
+	}
+private:
+	bool _locked = false;
+};
+
 int32 sum = 0;
 mutex m;
+SpinLock spinLock;
 
 void Add()
 {
 	for (int32 i = 0; i < 10'000; i++)
 	{
-		lock_guard<mutex> guard(m);
+		lock_guard<SpinLock> guard(spinLock);
 		sum++;
 	}
 }
@@ -21,7 +43,7 @@ void Sub()
 {
 	for (int32 i = 0; i < 10'000; i++)
 	{
-		lock_guard<mutex> guard(m);
+		lock_guard<SpinLock> guard(spinLock);
 		sum--;
 	}
 }
