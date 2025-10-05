@@ -23,7 +23,7 @@ public:
 		_locked = false;
 	}
 private:
-	bool _locked = false;
+	volatile bool _locked = false; //volatile : 컴파일러 최적화 방지
 };
 
 int32 sum = 0;
@@ -50,6 +50,15 @@ void Sub()
 
 int main()
 {
+	//volatile 테스트
+	int32 a = 0;
+	a = 1;
+	a = 2;
+	a = 3;
+	a = 4; // volatile 미사용시 최적화로 a가 4로 바로 바뀜
+	cout << a << endl;
+	///////////////////////
+
 	thread t1(Add);
 	thread t2(Sub);
 
