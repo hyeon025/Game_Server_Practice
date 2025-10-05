@@ -10,20 +10,37 @@ class SpinLock
 public:
 	void lock() 
 	{
-		while (_locked)
+		//CAS (Compare-And-Swap)
+
+		bool expected = false;
+		bool desired = true;
+
+		////CAS 의사코드
+		//if(_locked == expected)
+		//{
+		//	expected = _locked;
+		//	_locked = desired;
+		//	return true;
+		//}
+		//else
+		//{
+		//	expected = _locked;
+		//	return false;
+		//}
+
+		while (_locked.compare_exchange_strong(expected, desired) == false) //CAS 코드
 		{
-
+			//성공할 때까지 반복
+			expected = false;
 		}
-
-		_locked = true;
 	}
 
 	void unlock() 
 	{
-		_locked = false;
+		_locked.store(false);
 	}
 private:
-	volatile bool _locked = false; //volatile : 컴파일러 최적화 방지
+	atomic<bool> _locked = false; //atomic에 valatile 기능도 포함
 };
 
 int32 sum = 0;
@@ -50,14 +67,7 @@ void Sub()
 
 int main()
 {
-	//volatile 테스트
-	int32 a = 0;
-	a = 1;
-	a = 2;
-	a = 3;
-	a = 4; // volatile 미사용시 최적화로 a가 4로 바로 바뀜
-	cout << a << endl;
-	///////////////////////
+
 
 	thread t1(Add);
 	thread t2(Sub);
