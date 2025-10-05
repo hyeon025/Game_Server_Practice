@@ -67,7 +67,9 @@ void Sub()
 
 int main()
 {
-
+	//spinlock은 락이 금방 풀릴 것이라 예측될 때 사용한다.
+	//커널모드로 전환하지 않고 유저모드에 계속 있기 때문에 cpu점유율이 높다.
+	//context switch를 하지 않는다.
 
 	thread t1(Add);
 	thread t2(Sub);
