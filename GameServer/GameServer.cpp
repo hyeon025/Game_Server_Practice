@@ -15,23 +15,13 @@ public:
 		bool expected = false;
 		bool desired = true;
 
-		////CAS 의사코드
-		//if(_locked == expected)
-		//{
-		//	expected = _locked;
-		//	_locked = desired;
-		//	return true;
-		//}
-		//else
-		//{
-		//	expected = _locked;
-		//	return false;
-		//}
-
-		while (_locked.compare_exchange_strong(expected, desired) == false) //CAS 코드
+		while (_locked.compare_exchange_strong(expected, desired) == false)
 		{
-			//성공할 때까지 반복
 			expected = false;
+
+			//Sleep 구현
+			this_thread::sleep_for(chrono::microseconds(100)); //해당 시간동안 쉬기
+			//this_thread::yield(); //다른 스레드에게 양보
 		}
 	}
 
