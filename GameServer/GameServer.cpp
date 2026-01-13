@@ -20,7 +20,7 @@ void Producer()
 		}
 
 		::SetEvent(handle); //Signal 상태로 변경
-		this_thread::sleep_for(chrono::milliseconds(1000));
+		//this_thread::sleep_for(chrono::milliseconds(1000));
 	}
 }
 
@@ -35,7 +35,7 @@ void Consumer()
 		{
 			int32 data = q.front();
 			q.pop();
-			cout << data << endl;
+			cout << q.size() << endl;
 		}
 	}
 }
