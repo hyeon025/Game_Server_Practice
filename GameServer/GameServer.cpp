@@ -6,6 +6,9 @@
 #include <mutex>
 #include <future>
 
+
+int64 result;
+
 int64 Calculate()
 {
 	int64 sum = 0;
@@ -15,6 +18,7 @@ int64 Calculate()
 		sum += i;
 	}
 
+	result = sum;
 	return sum;
 }
 
@@ -24,6 +28,8 @@ int main()
 	int64 sum = Calculate();
 	cout << sum << endl;
 
+	thread t(Calculate);
 
+	t.join();
 
 }
