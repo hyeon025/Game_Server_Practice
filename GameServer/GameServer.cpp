@@ -22,6 +22,10 @@ void PromiseWorker(std::promise<string>&& promise)
 	promise.set_value("Secret Message");
 }
 
+void TaskWorker(std::packaged_task<int64(void)>&& task)
+{
+	task();
+}
 
 int main()
 {
@@ -34,9 +38,9 @@ int main()
 		//1)deferred -> lazy evaluation (지연시켜 실행)
 		//2)async -> 별도의 쓰레드를 만들어서 실행
 		//3)deferred | async -> 알아서 선택
-		std::future<int64> future = std::async(std::launch::async,Calculate);
+		std::future<int64> future = std::async(std::launch::async, Calculate);
 
-		
+
 
 		int64 sum = future.get();  //결과물 가져오기
 	}
@@ -55,4 +59,29 @@ int main()
 		t.join();
 	}
 
+	//std::packaged_task
+	{
+		std::packaged_task<int64(void)> task(Calculate);
+		std::future<int64> future = task.get_future();
+
+		std::thread t(TaskWorker, std::move(task)); //task 소유권 이동
+
+		int64 sum = future.get();
+
+		cout << sum << endl;
+
+		t.join();
+
+	}
+
+	//결론)
+	//mutex, condition_variable 까지 사용하지 않고 단순한 애들을 처리할 수 있도록
+	//일회성으로 사용할 수 있는 방법
+
+	//1)async
+	//원하는 함수를 비동기적으로 실행
+	//2)promise
+	//결과물을 promise를 통해 future로 받아줌
+	//3)packaged_task
+	//원하는 함수의 실행 결과를 packaged_task를 통해 future로 받아줌
 }
