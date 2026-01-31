@@ -7,8 +7,6 @@
 #include <future>
 
 
-int64 result;
-
 int64 Calculate()
 {
 	int64 sum = 0;
@@ -18,18 +16,23 @@ int64 Calculate()
 		sum += i;
 	}
 
-	result = sum;
 	return sum;
 }
 
 int main()
 {
-	//동기 방식의 실행 (synchronous)
-	int64 sum = Calculate();
-	cout << sum << endl;
+	////동기 방식의 실행 (synchronous)
+	//int64 sum = Calculate();
+	//cout << sum << endl;
 
-	thread t(Calculate);
+	//std::future
+	{
+		//1)deferred -> lazy evaluation (지연시켜 실행)
+		//2)async -> 별도의 쓰레드를 만들어서 실행
+		//3)deferred | async -> 알아서 선택
+		std::future<int64> future = std::async(std::launch::async,Calculate);
 
-	t.join();
 
+		int64 sum = future.get();  //결과물 가져오기
+	}
 }
