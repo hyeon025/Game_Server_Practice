@@ -6,7 +6,6 @@
 #include <mutex>
 #include <future>
 
-
 int64 Calculate()
 {
 	int64 sum = 0;
@@ -32,13 +31,18 @@ int main()
 		//3)deferred | async -> 알아서 선택
 		std::future<int64> future = std::async(std::launch::async,Calculate);
 
-		//작업이 끝났는지 잠시 살펴보기
-		std::future_status status = future.wait_for(std::chrono::milliseconds(1));
-		if (status == future_status::ready)
-		{
-			std::cout << "작업 끝남" << std::endl;
-		}
+		
 
 		int64 sum = future.get();  //결과물 가져오기
 	}
+
+	class Knight
+	{
+	public:
+		int64 GetHP() { return 100; }
+	};
+
+	Knight knight;
+	std::future<int64> future2 = std::async(std::launch::async, &Knight::GetHP, knight); //knight.GetHP()'
+
 }
